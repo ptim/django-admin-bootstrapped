@@ -91,7 +91,7 @@
 {% endwith %}
 
 {% if action_form and actions_on_top and cl.full_result_count %}
-<div class='pull-right'>{% admin_actions %}</div>
+{% admin_actions %}
 {% endif %}
 
 <div id="content-main">
