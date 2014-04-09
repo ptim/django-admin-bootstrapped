@@ -48,19 +48,24 @@
 {% block object-tools %}
     <ul class="object-tools pull-left navbar-form list-unstyled">
         {% block object-tools-items %}
+            {% if action_form and actions_on_top and cl.full_result_count %}
+                <li class='admin-actions'>{% admin_actions %}</li>
+            {% endif %}
 
-        {% if action_form and actions_on_top and cl.full_result_count %}
-        <li class='admin-actions'>{% admin_actions %}</li>
-        {% endif %}
+            {% if has_add_permission %}
+                <li class='add-entity'>
+                    <a href="{% url cl.opts|admin_urlname:'add' %}{% if is_popup %}?_popup=1{% endif %}" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-plus"></span> {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
+                    </a>
+                </li>
+            {% endif %}
+        {% endblock object-tools-items %}
 
-        {% if has_add_permission %}
-        <li class='add-entity'>
-            <a href="{% url cl.opts|admin_urlname:'add' %}{% if is_popup %}?_popup=1{% endif %}" class="btn btn-primary">
-            <span class="glyphicon glyphicon-plus"></span> {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
-        </a>
-        </li>
+        {% if search_form|length > 0 %}
+            <li class="search-form">
+                {% block search %}{% search_form cl %}{% endblock %}
+            </li>
         {% endif %}
-        {% endblock %}
 
     </ul>
 
@@ -76,7 +81,6 @@
         </li>
     </ul>
     {% endif %}
-    {% block search %}{% search_form cl %}{% endblock %}
 
 {% endblock object-tools %}
 
